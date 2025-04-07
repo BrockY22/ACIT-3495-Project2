@@ -7,8 +7,8 @@ from flask_mysqldb import MySQL  # ✅ Import MySQLdb
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key')
-AUTH_SERVICE_URL = os.getenv('AUTH_SERVICE_URL', 'http://localhost:5000')
-FILE_SYSTEM_URL = os.getenv('FILE_SYSTEM_URL', 'http://localhost:5001')  # ✅ Fix incorrect service name
+AUTH_SERVICE_URL = os.getenv('AUTH_SERVICE_URL', 'http://auth:5000')
+FILE_SYSTEM_URL = os.getenv('FILE_SYSTEM_URL', 'http://filesystem:5001')  # ✅ Fix incorrect service name
 
 # ✅ Add MySQL configuration
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'db')  # MySQL container name
@@ -71,7 +71,7 @@ def view_media(filename):
         return redirect(f"{AUTH_SERVICE_URL}/login?message=Session expired. Please log in again.")
 
     # ✅ Fix incorrect media URL (no need to include `username`)
-    media_url = f"http://localhost:5001/files/{filename}"
+    media_url = f"http://filesystem:5001/files/{filename}"
 
     return render_template('video_player.html', filename=filename, media_url=media_url, username=username)
 

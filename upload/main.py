@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key')
-AUTH_SERVICE_URL = os.getenv('AUTH_SERVICE_URL', 'http://localhost:5000')
+AUTH_SERVICE_URL = os.getenv('AUTH_SERVICE_URL', 'http://auth:5000')
 FILE_SYSTEM_URL = os.getenv('FILE_SYSTEM_URL', 'http://filesystem:5001')
 
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB upload limit
@@ -100,7 +100,7 @@ def process_upload():
             logging.error(f"Database error: {e}")
             return jsonify({'message': f'Database error: {str(e)}'}), 500
 
-        return redirect("http://localhost:8090/browse")  # ✅ Redirect to browse page
+        return redirect("http://upload:8090/browse")  # ✅ Redirect to browse page
     else:
         return jsonify({'message': 'File upload failed'}), 500
 
