@@ -57,7 +57,7 @@ spec:
                 configMapKeyRef:
                   key: SECRET_KEY
                   name: env
-          image: stream
+          image: kiawnu/stream:latest
           name: stream-service
           ports:
             - containerPort: 8090

@@ -57,7 +57,7 @@ spec:
                 configMapKeyRef:
                   key: SECRET_KEY
                   name: env
-          image: auth
+          image: kiawnu/auth:latest
           name: auth-service
           ports:
             - containerPort: 5000

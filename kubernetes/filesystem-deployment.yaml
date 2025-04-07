@@ -59,7 +59,7 @@ spec:
                 configMapKeyRef:
                   key: SECRET_KEY
                   name: env
-          image: filesystem
+          image: kiawnu/filesystem:latest
           name: file-system-service
           ports:
             - containerPort: 5001
