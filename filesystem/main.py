@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', '/media-data')
-AUTH_SERVICE_URL = os.getenv('AUTH_SERVICE_URL', 'http://localhost:5000')
+AUTH_SERVICE_URL = "http://172.179.66.50"
 SECRET_KEY = os.getenv('SECRET_KEY', 'your_secret_key')  
 
 # Ensure upload folder exists
@@ -105,7 +105,7 @@ def list_files():
         for file in files:
             if allowed_file(file):
                 file_path = os.path.relpath(os.path.join(root, file), UPLOAD_FOLDER)
-                file_url = f"http://localhost:5001/files/{file}" 
+                file_url = f"http://172.179.66.50/files/{file}" 
                 all_files.append({"filename": file, "url": file_url})
 
     return jsonify({'files': all_files})
