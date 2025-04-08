@@ -41,7 +41,7 @@ def verify_token(token):
 def home():
     token = request.cookies.get('token')
     if not token or not verify_token(token):
-        return redirect(f"{AUTH_SERVICE_URL}/login?message=Please log in first.")
+        return redirect(f"/auth/login?message=Please log in first.")
     
     return redirect(url_for('upload'))
 
@@ -54,11 +54,11 @@ def upload():
     """Displays the upload page."""
     token = request.cookies.get('token')
     if not token:
-        return redirect(f"{AUTH_SERVICE_URL}/login?message=Please log in first.")
+        return redirect(f"/auth/login?message=Please log in first.")
 
     username = verify_token(token)
     if not username:
-        return redirect(f"{AUTH_SERVICE_URL}/login?message=Session expired. Please log in again.")
+        return redirect(f"/auth/login?message=Session expired. Please log in again.")
 
     return render_template('upload.html', username=username)  # ✅ Show upload page
 
@@ -100,7 +100,7 @@ def process_upload():
             logging.error(f"Database error: {e}")
             return jsonify({'message': f'Database error: {str(e)}'}), 500
 
-        return redirect("http://172.179.66.50/stream")  # ✅ Redirect to browse page
+        return redirect("http://172.179.66.50/stream")  
     else:
         return jsonify({'message': 'File upload failed'}), 500
 
@@ -110,7 +110,7 @@ def upload_success():
     return render_template('success.html')
 @app.route('/logout')
 def logout():
-    response = redirect(f"{AUTH_SERVICE_URL}/login?message=You have been logged out.")
+    response = redirect(f"/auth/login?message=You have been logged out.")
     response.set_cookie('token', '', expires=0)  # ✅ Clears the authentication token
     return response
 

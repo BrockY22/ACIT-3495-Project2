@@ -33,19 +33,19 @@ def verify_token(token):
 def home():
     token = request.cookies.get('token')
     if not token or not verify_token(token):
-        return redirect(f"{AUTH_SERVICE_URL}/login?message=Please log in first.")
+        return redirect(f"/auth/login?message=Please log in first.")
     
     return redirect(url_for('browse_files'))
 @app.route('/browse', methods=['GET'])
 def browse_files():
     token = request.cookies.get('token')
     if not token:
-        return redirect(f"{AUTH_SERVICE_URL}/login?message=Please log in first.")
+        return redirect(f"/auth/login?message=Please log in first.")
 
     # Verify token
     username = verify_token(token)
     if not username:
-        return redirect(f"{AUTH_SERVICE_URL}/login?message=Session expired. Please log in again.")
+        return redirect(f"/auth/login?message=Session expired. Please log in again.")
 
     # ✅ Fetch all videos from the database (not just the current user)
     try:
@@ -63,12 +63,12 @@ def browse_files():
 def view_media(filename):
     token = request.cookies.get('token')
     if not token:
-        return redirect(f"{AUTH_SERVICE_URL}/login?message=Please log in first.")
+        return redirect(f"/auth/login?message=Please log in first.")
 
     # Verify token
     username = verify_token(token)
     if not username:
-        return redirect(f"{AUTH_SERVICE_URL}/login?message=Session expired. Please log in again.")
+        return redirect(f"/auth/login?message=Session expired. Please log in again.")
 
     # ✅ Fix incorrect media URL (no need to include `username`)
     media_url = f"{FILE_SYSTEM_URL}/files/{filename}"

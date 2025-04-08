@@ -3,35 +3,28 @@ kind: Ingress
 metadata:
   name: project-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   rules:
     - http:
         paths:
-          - path: /upload(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: /upload
+            pathType: Prefix
             backend:
               service:
                 name: upload
                 port:
                   number: 8080
-          - path: /stream(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: /stream
+            pathType: Prefix
             backend:
               service:
                 name: stream
                 port:
                   number: 8090
-          - path: /dashboard(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: auth
-                port:
-                  number: 5000
-          - path: /login(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: /auth
+            pathType: Prefix
             backend:
               service:
                 name: auth
