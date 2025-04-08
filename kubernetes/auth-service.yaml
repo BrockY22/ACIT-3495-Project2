@@ -8,7 +8,6 @@ metadata:
     io.kompose.service: auth
   name: auth
 spec:
-  type: NodePort
   ports:
     - name: "5000"
       port: 5000
