@@ -37,7 +37,7 @@ def verify_token(token):
     except jwt.InvalidTokenError:
         logging.error("Invalid token")
         return None
-@app.route('/upload')
+@app.route('/upload/')
 def home():
     token = request.cookies.get('token')
     if not token or not verify_token(token):
@@ -62,6 +62,7 @@ def upload():
 
     return render_template('upload.html', username=username)  # ✅ Show upload page
 
+@app.route('/upload/process_upload/', methods=['POST'])
 @app.route('/upload/process_upload', methods=['POST'])
 def process_upload():
     """Handles the video upload process."""

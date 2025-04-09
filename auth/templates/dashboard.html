@@ -69,9 +69,9 @@
         <h2>Welcome, {{ username }}!</h2>
         <p>Choose an action:</p>
         <div class="button-container">
-            <a href="/upload"><button class="upload-btn">Upload Videos</button></a>
+            <a href="/upload/upload"><button class="upload-btn">Upload Videos</button></a>
             <a href="/stream"><button class="browse-btn">Browse & Stream Videos</button></a>
-            <a href="{{ url_for('logout') }}"><button class="logout-btn">Logout</button></a>
+            <a href="/auth/logout"><button class="logout-btn">Logout</button></a>
         </div>
     </div>
 

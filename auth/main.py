@@ -24,7 +24,7 @@ def verify_token(token):
     except jwt.InvalidTokenError:
         return None  # Invalid token
     
-@app.route('/auth')
+@app.route('/auth/')
 def home():
     token = request.cookies.get('token')
     if token and verify_token(token):
@@ -56,7 +56,7 @@ def register():
             return render_template('register.html', message="Registration failed.", show_alert=True)
 
     return render_template('register.html', message=message, show_alert=False)
-
+@app.route('/auth/login/', methods=['GET', 'POST'])
 @app.route('/auth/login', methods=['GET', 'POST'])
 def login():
     token = request.cookies.get('token')
