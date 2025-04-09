@@ -16,13 +16,6 @@ spec:
                 name: upload
                 port:
                   number: 8080
-          - path: /stream
-            pathType: Prefix
-            backend:
-              service:
-                name: stream
-                port:
-                  number: 8090
           - path: /auth
             pathType: Prefix
             backend:
@@ -30,3 +23,10 @@ spec:
                 name: auth
                 port:
                   number: 5000
+          - path: /stream
+            pathType: Prefix
+            backend:
+              service:
+                name: stream
+                port:
+                  number: 8090

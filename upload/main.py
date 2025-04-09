@@ -37,7 +37,7 @@ def verify_token(token):
     except jwt.InvalidTokenError:
         logging.error("Invalid token")
         return None
-@app.route('/')
+@app.route('/upload')
 def home():
     token = request.cookies.get('token')
     if not token or not verify_token(token):
@@ -62,7 +62,7 @@ def upload():
 
     return render_template('upload.html', username=username)  # ✅ Show upload page
 
-@app.route('/process_upload', methods=['POST'])
+@app.route('/upload/process_upload', methods=['POST'])
 def process_upload():
     """Handles the video upload process."""
     token = request.cookies.get('token') or request.headers.get('Authorization')
@@ -100,7 +100,7 @@ def process_upload():
             logging.error(f"Database error: {e}")
             return jsonify({'message': f'Database error: {str(e)}'}), 500
 
-        return redirect("http://172.179.66.50/stream")  
+        return redirect("/stream")  
     else:
         return jsonify({'message': 'File upload failed'}), 500
 
@@ -108,7 +108,7 @@ def process_upload():
 def upload_success():
     """✅ Success page for uploads"""
     return render_template('success.html')
-@app.route('/logout')
+@app.route('/upload/logout')
 def logout():
     response = redirect(f"/auth/login?message=You have been logged out.")
     response.set_cookie('token', '', expires=0)  # ✅ Clears the authentication token

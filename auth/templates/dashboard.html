@@ -69,8 +69,8 @@
         <h2>Welcome, {{ username }}!</h2>
         <p>Choose an action:</p>
         <div class="button-container">
-            <a href="http://upload:8080/upload"><button class="upload-btn">Upload Videos</button></a>
-            <a href="http://stream:8090/browse"><button class="browse-btn">Browse & Stream Videos</button></a>
+            <a href="/upload"><button class="upload-btn">Upload Videos</button></a>
+            <a href="/stream"><button class="browse-btn">Browse & Stream Videos</button></a>
             <a href="{{ url_for('logout') }}"><button class="logout-btn">Logout</button></a>
         </div>
     </div>

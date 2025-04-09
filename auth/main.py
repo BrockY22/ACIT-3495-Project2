@@ -24,14 +24,14 @@ def verify_token(token):
     except jwt.InvalidTokenError:
         return None  # Invalid token
     
-@app.route('/')
+@app.route('/auth')
 def home():
     token = request.cookies.get('token')
     if token and verify_token(token):
         return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/auth/register', methods=['GET', 'POST'])
 def register():
     message = request.args.get('message', '')
     if request.method == 'POST':
@@ -57,7 +57,7 @@ def register():
 
     return render_template('register.html', message=message, show_alert=False)
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/auth/login', methods=['GET', 'POST'])
 def login():
     token = request.cookies.get('token')
     if token and verify_token(token):
@@ -94,7 +94,7 @@ def login():
 
     return render_template('login.html', message=message)
 
-@app.route('/dashboard')
+@app.route('/auth/dashboard')
 def dashboard():
     token = request.cookies.get('token')  # Get token from cookies
     if not token:
@@ -107,7 +107,7 @@ def dashboard():
     return render_template('dashboard.html', username=username)  # Show dashboard
 
 
-@app.route('/logout')
+@app.route('/auth/logout')
 def logout():
     response = make_response(redirect(url_for('login', message="You have been logged out.")))
     response.set_cookie('token', '', expires=0, httponly=True, secure=True, samesite='Lax')

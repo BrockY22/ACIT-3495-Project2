@@ -39,7 +39,7 @@ def verify_token(token):
         logging.error("Invalid token")  # ✅ Debugging
         return None
 
-@app.route('/')
+@app.route('/filesystem/')
 def home():
     return jsonify({'message': 'Welcome to the File System Service. API is running.'})
 
@@ -47,7 +47,7 @@ def allowed_file(filename):
     """Check if file has a valid extension"""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/create_user_directory', methods=['POST'])
+@app.route('/filesystem/create_user_directory', methods=['POST'])
 def create_user_directory():
     data = request.json
     username = data.get('username')
@@ -55,7 +55,7 @@ def create_user_directory():
     os.makedirs(user_upload_path, exist_ok=True)
     return jsonify({'message': 'User directory created'}), 201
 
-@app.route('/upload', methods=['POST'])
+@app.route('/filesystem/upload', methods=['POST'])
 def upload_file():
     token = request.headers.get('Authorization')
     if not token:
@@ -84,7 +84,7 @@ def upload_file():
     
     return jsonify({'message': 'File uploaded successfully', 'file_path': file_path}), 201
 
-@app.route('/files', methods=['GET'])
+@app.route('/filesystem/files', methods=['GET'])
 def list_files():
     """Return all files (Global visibility for all users)"""
     token = request.headers.get('Authorization') or request.cookies.get('token')  # ✅ Support both headers and cookies
@@ -105,12 +105,12 @@ def list_files():
         for file in files:
             if allowed_file(file):
                 file_path = os.path.relpath(os.path.join(root, file), UPLOAD_FOLDER)
-                file_url = f"http://172.179.66.50/files/{file}" 
+                file_url = f"/filesystem/files/{file}" 
                 all_files.append({"filename": file, "url": file_url})
 
     return jsonify({'files': all_files})
 
-@app.route('/files/<filename>', methods=['GET'])
+@app.route('/filesystem/files/<filename>', methods=['GET'])
 def get_file(filename):
     """Stream the requested file with Range support."""
     # ✅ Remove token requirement for video streaming

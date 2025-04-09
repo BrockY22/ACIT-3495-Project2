@@ -29,14 +29,14 @@ def verify_token(token):
         return None  # Token expired
     except jwt.InvalidTokenError:
         return None  # Invalid token
-@app.route('/')
+@app.route('/stream/')
 def home():
     token = request.cookies.get('token')
     if not token or not verify_token(token):
         return redirect(f"/auth/login?message=Please log in first.")
     
     return redirect(url_for('browse_files'))
-@app.route('/browse', methods=['GET'])
+@app.route('/stream', methods=['GET'])
 def browse_files():
     token = request.cookies.get('token')
     if not token:
@@ -59,7 +59,7 @@ def browse_files():
 
     return render_template('browse.html', files=files, username=username)
 
-@app.route('/media/<filename>', methods=['GET'])
+@app.route('/stream/media/<filename>', methods=['GET'])
 def view_media(filename):
     token = request.cookies.get('token')
     if not token:
@@ -71,7 +71,7 @@ def view_media(filename):
         return redirect(f"/auth/login?message=Session expired. Please log in again.")
 
     # ✅ Fix incorrect media URL (no need to include `username`)
-    media_url = f"{FILE_SYSTEM_URL}/files/{filename}"
+    media_url = f"/filesystem/files/{filename}"
 
     return render_template('video_player.html', filename=filename, media_url=media_url, username=username)
 
