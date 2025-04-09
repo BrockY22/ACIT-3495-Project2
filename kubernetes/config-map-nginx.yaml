@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-proxy-config
+data:
+  nginx.conf: |
+    worker_processes 1;
+    events { worker_connections 1024; }
+
+    http {
+      upstream auth_upstream {
+        server auth.default.svc.cluster.local:5000;
+      }
+      upstream upload_upstream {
+        server upload.default.svc.cluster.local:8080;
+      }
+      upstream stream_upstream {
+        server stream.default.svc.cluster.local:8090;
+      }
+
+      server {
+        listen 8001;
+        location / {
+          proxy_pass http://auth_upstream;
+        }
+      }
+
+      server {
+        listen 8002;
+        location / {
+          proxy_pass http://upload_upstream;
+        }
+      }
+
+      server {
+        listen 8003;
+        location / {
+          proxy_pass http://stream_upstream;
+        }
+      }
+    }

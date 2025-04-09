@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-proxy-lb
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx-proxy
+  ports:
+  - name: auth
+    port: 8001
+    targetPort: 8001
+  - name: upload
+    port: 8002
+    targetPort: 8002
+  - name: stream
+    port: 8003
+    targetPort: 8003
