@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key')
 AUTH_SERVICE_URL = "http://172.179.66.50"
-FILE_SYSTEM_URL = "http://172.179.66.50"
+FILE_SYSTEM_URL = "http://filesystem:5001/filesystem"
 
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB upload limit
 

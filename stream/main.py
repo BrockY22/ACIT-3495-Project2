@@ -8,7 +8,7 @@ from flask_mysqldb import MySQL  # ✅ Import MySQLdb
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'your_secret_key')
 AUTH_SERVICE_URL = "http://172.179.66.50"
-FILE_SYSTEM_URL = "http://172.179.66.50"
+FILE_SYSTEM_URL = "http://filesystem:5001/filesystem"
 
 # ✅ Add MySQL configuration
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'db')  # MySQL container name
