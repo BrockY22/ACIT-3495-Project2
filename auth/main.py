@@ -110,7 +110,7 @@ def dashboard():
 @app.route('/auth/logout')
 def logout():
     response = make_response(redirect(url_for('login', message="You have been logged out.")))
-    response.set_cookie('token', '', expires=0, httponly=True, secure=True, samesite='Lax')
+    response.set_cookie('token', '', expires=0, httponly=True, secure=False, samesite='Lax')
     return response
 
 if __name__ == '__main__':
