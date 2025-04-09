@@ -57,7 +57,7 @@ spec:
                 configMapKeyRef:
                   key: SECRET_KEY
                   name: env
-          image: kiawnu/upload:latest
+          image: kiawnu/upload-2:v1
           name: upload-service
           ports:
             - containerPort: 8080
