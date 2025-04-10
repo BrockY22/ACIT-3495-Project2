@@ -29,14 +29,14 @@ def verify_token(token):
             token = token.split(" ")[1]  # Extract actual token part
 
         decoded_token = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-        logging.info(f"Decoded token: {decoded_token}")  # ✅ Debugging
+        logging.info(f"Decoded token: {decoded_token}")  # Debugging
 
         return decoded_token.get('username')
     except jwt.ExpiredSignatureError:
-        logging.error("Token expired")  # ✅ Debugging
+        logging.error("Token expired")  # Debugging
         return None
     except jwt.InvalidTokenError:
-        logging.error("Invalid token")  # ✅ Debugging
+        logging.error("Invalid token")  # Debugging
         return None
 
 @app.route('/filesystem/')
@@ -87,7 +87,7 @@ def upload_file():
 @app.route('/filesystem/files', methods=['GET'])
 def list_files():
     """Return all files (Global visibility for all users)"""
-    token = request.headers.get('Authorization') or request.cookies.get('token')  # ✅ Support both headers and cookies
+    token = request.headers.get('Authorization') or request.cookies.get('token')  # Support both headers and cookies
 
     if not token:
         logging.error("Token is missing")
@@ -96,10 +96,10 @@ def list_files():
     username = verify_token(token)
 
     if not username:
-        logging.error("Failed token verification")  # ✅ Debugging
+        logging.error("Failed token verification")  # Debugging
         return jsonify({'message': 'Unauthorized'}), 401
 
-    # ✅ List all video files across all user directories
+    # List all video files across all user directories
     all_files = []
     for root, _, files in os.walk(UPLOAD_FOLDER):
         for file in files:
@@ -113,10 +113,10 @@ def list_files():
 @app.route('/filesystem/files/<filename>', methods=['GET'])
 def get_file(filename):
     """Stream the requested file with Range support."""
-    # ✅ Remove token requirement for video streaming
+    # Remove token requirement for video streaming
     filename = secure_filename(filename)
 
-    # ✅ Find the file in any user directory
+    # Find the file in any user directory
     file_path = None
     for root, _, files in os.walk(UPLOAD_FOLDER):
         if filename in files:
@@ -126,7 +126,7 @@ def get_file(filename):
     if not file_path or not os.path.exists(file_path):
         return jsonify({'message': 'File not found'}), 404
 
-    # ✅ Support video streaming with Range headers
+    # Support video streaming with Range headers
     range_header = request.headers.get('Range')
     file_size = os.path.getsize(file_path)
 

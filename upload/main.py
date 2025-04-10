@@ -4,7 +4,7 @@ import jwt
 import logging
 import mimetypes
 from flask import Flask, request, jsonify, render_template, redirect, url_for
-from flask_mysqldb import MySQL  # ✅ Import MySQLdb
+from flask_mysqldb import MySQL  # Import MySQLdb
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -14,13 +14,13 @@ FILE_SYSTEM_URL = "http://filesystem:5001/filesystem"
 
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB upload limit
 
-# ✅ Add MySQL configuration
+# Add MySQL configuration
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'db')
 app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')
 app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', 'password')
 app.config['MYSQL_DB'] = os.getenv('MEDIA_DB','uploads')
 
-mysql = MySQL(app)  # ✅ Initialize MySQL
+mysql = MySQL(app)  # Initialize MySQL
 
 logging.basicConfig(level=logging.INFO)
 
@@ -60,7 +60,7 @@ def upload():
     if not username:
         return redirect(f"/auth/login?message=Session expired. Please log in again.")
 
-    return render_template('upload.html', username=username)  # ✅ Show upload page
+    return render_template('upload.html', username=username)  # Show upload page
 
 @app.route('/upload/process_upload/', methods=['POST'])
 @app.route('/upload/process_upload', methods=['POST'])
@@ -80,7 +80,7 @@ def process_upload():
     file = request.files['file']
     filename = secure_filename(file.filename)
 
-    # ✅ Send file to File System Service
+    # Send file to File System Service
     file_response = requests.post(
         f"{FILE_SYSTEM_URL}/upload",
         headers={'Authorization': f'Bearer {token}'},
@@ -90,7 +90,7 @@ def process_upload():
     if file_response.status_code == 201:
         file_path = file_response.json().get('file_path')
 
-        # ✅ Insert into MySQL for Global Access
+        # Insert into MySQL for Global Access
         try:
             cur = mysql.connection.cursor()
             cur.execute("INSERT INTO files (username, filename, filepath) VALUES (%s, %s, %s)", 
@@ -107,12 +107,12 @@ def process_upload():
 
 @app.route('/upload/success', methods=['GET'])
 def upload_success():
-    """✅ Success page for uploads"""
+    """  Success page for uploads"""
     return render_template('success.html')
 @app.route('/upload/logout')
 def logout():
     response = redirect(f"/auth/login?message=You have been logged out.")
-    response.set_cookie('token', '', expires=0)  # ✅ Clears the authentication token
+    response.set_cookie('token', '', expires=0)  # Clears the authentication token
     return response
 
 if __name__ == '__main__':
